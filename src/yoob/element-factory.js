@@ -7,8 +7,6 @@ if (window.yoob === undefined) yoob = {};
 
 /*
  * Functions for creating elements.
- *
- * I dunno -- maybe just setting innerHTML would be better.
  */
 
 yoob.makeCanvas = function(container, width, height) {
@@ -97,6 +95,26 @@ yoob.makeDiv = function(container, innerHTML) {
     div.innerHTML = innerHTML || '';
     container.appendChild(div);
     return div;
+};
+
+yoob.makePanel = function(container, title, isOpen) {
+    isOpen = !!isOpen;
+    var panelContainer = document.createElement('div');
+    var button = document.createElement('button');
+    var innerContainer = document.createElement('div');
+    innerContainer.style.display = isOpen ? "block" : "none";
+
+    button.innerHTML = (isOpen ? "∇" : "⊳") + " " + title;
+    button.onclick = function(e) {
+        isOpen = !isOpen;
+        button.innerHTML = (isOpen ? "∇" : "⊳") + " " + title;
+        innerContainer.style.display = isOpen ? "block" : "none";
+    };
+
+    panelContainer.appendChild(button);
+    panelContainer.appendChild(innerContainer);
+    container.appendChild(panelContainer);
+    return innerContainer;
 };
 
 yoob.makeTextArea = function(container, cols, rows, initial) {

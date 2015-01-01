@@ -19,27 +19,27 @@ function launch(prefix, containerId, config) {
             var canvas = yoob.makeCanvas(container, 400, 400);
             canvas.style.background = "white";
             canvas.style.border = "1px solid black";
-            yoob.makeLineBreak(container);
+            config.canvas = canvas;
 
             var controlPanel = config.controlPanel || container;
-
-            var urlElem = yoob.makeTextInput(controlPanel, 32, config.imgUrl);
-            yoob.makeButton(controlPanel, 'Load', function() {
-                t.load(urlElem.value);
-            });
-            yoob.makeLineBreak(controlPanel);
-
-            config.canvas = canvas;
 
             yoob.makeButton(controlPanel, 'Restart', function() { t.reset(); });
             yoob.makeButton(controlPanel, 'Pause', function() { t.pause(); });
             yoob.makeButton(controlPanel, 'Resume', function() { t.resume(); });
             yoob.makeLineBreak(controlPanel);
 
-            var presetSelect = yoob.makeSelect(controlPanel, "Preset:", []);
-            yoob.makeLineBreak(controlPanel);
+            urlPanel = yoob.makePanel(controlPanel, "Image URL", false);
+            var urlElem = yoob.makeTextInput(urlPanel, 32, config.imgUrl);
+            yoob.makeButton(urlPanel, 'Load', function() {
+                t.load(urlElem.value);
+            });
+            urlPanel.style.background = "#e0e0e0";
 
-            var sliderPanel = yoob.makeDiv(controlPanel);
+            presetPanel = yoob.makePanel(controlPanel, "Select Preset", true);
+            var presetSelect = yoob.makeSelect(presetPanel, "Preset:", []);
+            presetPanel.style.background = "#e0e0e0";
+
+            var sliderPanel = yoob.makePanel(controlPanel, "Adjust Parameters", false);
             sliderPanel.style.textAlign = "right";
             sliderPanel.style.background = "#e0e0e0";
 

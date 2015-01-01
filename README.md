@@ -2,7 +2,7 @@ Canvas Feedback
 ===============
 
 Canvas Feedback is an application of an analogue-video-like feedback effect
-to an HTML5 canvas.  .
+to an HTML5 canvas element.
 
 You can see and play with online here:
 [Canvas Feedback installation at Cat's Eye Technologies](http://catseye.tc/installation/Canvas_Feedback).
