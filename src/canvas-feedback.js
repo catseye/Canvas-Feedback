@@ -169,6 +169,13 @@ function launch(prefix, containerId, config) {
                     shrink_top: 200,
                     shrink_bottom: 0
                 },
+                "Extremes": {
+                    rotate: 2500,
+                    shrink_left: -65,
+                    shrink_right: 75,
+                    shrink_top: -55,
+                    shrink_bottom: 85
+                },
                 "Identity (No effect)": {
                     rotate: 0,
                     shrink_left: 0,

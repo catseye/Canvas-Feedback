@@ -30,6 +30,9 @@ And I came up with this as a simple technique which is similar to video
 feedback and which can be implemented straightforwardly in an HTML5
 canvas element.
 
+The default image used when Canvas Feedback starts up was designed by
+Gareth Jackson specifically to be a pleasing subject for this feedback process.
+
 Theory of Operation
 -------------------
 
