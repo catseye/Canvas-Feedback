@@ -21,12 +21,12 @@ function launch(prefix, containerId, config) {
             canvas.style.border = "1px solid black";
             config.canvas = canvas;
 
-            var controlPanel = config.controlPanel || container;
+            var buttonPanel = yoob.makeDiv(container);
+            yoob.makeButton(buttonPanel, 'Restart', function() { t.reset(); });
+            yoob.makeButton(buttonPanel, 'Pause', function() { t.pause(); });
+            yoob.makeButton(buttonPanel, 'Resume', function() { t.resume(); });
 
-            yoob.makeButton(controlPanel, 'Restart', function() { t.reset(); });
-            yoob.makeButton(controlPanel, 'Pause', function() { t.pause(); });
-            yoob.makeButton(controlPanel, 'Resume', function() { t.resume(); });
-            yoob.makeLineBreak(controlPanel);
+            var controlPanel = config.controlPanel || container;
 
             var stylePanel = function(panel) {
                 panel.style.background = "#e0e0e0";
