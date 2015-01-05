@@ -1,5 +1,5 @@
 /*
- * This file is part of yoob.js version 0.6
+ * This file is part of yoob.js version 0.7
  * Available from https://github.com/catseye/yoob.js/
  * This file is in the public domain.  See http://unlicense.org/ for details.
  */
@@ -71,6 +71,9 @@ yoob.Animation = function() {
      * milliseconds that have passed.  Neither method is passed any
      * parameters.
      *
+     * update() (or draw(), in 'proportional' mode only) may return the 
+     * exact object 'false' to force the animation to stop immediately.
+     *
      * In the 'proportional' mode, the object's draw() method is called on
      * each animation frame, and the amount of time (in milliseconds) that has
      * elapsed since the last time it was called (or 0 if it was never
@@ -100,7 +103,11 @@ yoob.Animation = function() {
                 $this.accumDelta += (time - $this.lastTime);
                 while ($this.accumDelta > $this.tickTime) {
                     $this.accumDelta -= $this.tickTime;
-                    $this.object.update();
+                    var result = $this.object.update();
+                    if (result === false) {
+                        $this.accumDelta = $this.tickTime;
+                        $this.request = null;
+                    }
                 }
                 $this.lastTime = time;
                 if ($this.request) {
@@ -113,7 +120,10 @@ yoob.Animation = function() {
                     $this.lastTime == null ? 0 : time - $this.lastTime
                 );
                 $this.lastTime = time;
-                $this.object.draw(timeElapsed);
+                var result = $this.object.draw(timeElapsed);
+                if (result === false) {
+                    $this.request = null;
+                }
                 if ($this.request) {
                     $this.request = requestAnimationFrame(animFrame);
                 }
