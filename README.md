@@ -64,3 +64,8 @@ step comes only from the previous step.  One result of this is that it will
 eventually "run out" of information and come to a fixed point (usually with
 the entire canvas being a single colour, or an unmoving series of concentric
 rings or discs of colour.)
+
+License
+-------
+
+Distributed under an MIT license.  See [LICENSE](LICENSE) for full information.
