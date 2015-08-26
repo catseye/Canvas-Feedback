@@ -1,13 +1,18 @@
 Canvas Feedback
 ===============
 
+_Rated "T" for "trippy"_
+
 Canvas Feedback is an application of an analogue-video-like feedback effect
 to an HTML5 canvas element.
 
 You can see and play with online here:
 [Canvas Feedback installation at Cat's Eye Technologies](http://catseye.tc/installation/Canvas_Feedback).
 
-_Rated "T" for "trippy"_
+A [stripped-down version](impl/canvas-feedback-1k/canvas-feedback-1k.js),
+949 bytes long, was submitted to [JS1K 2015](http://js1k.com/2015-hypetrain/),
+which you can see and play with here:
+[Canvas Feedback 1K Entry Page](http://js1k.com/2015-hypetrain/demo/2229).
 
 Background
 ----------
