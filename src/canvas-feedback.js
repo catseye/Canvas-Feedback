@@ -261,7 +261,8 @@ function launch(prefix, containerId, config) {
             }
 
             var qsArgs = parseQuerystring();
-            ['imgUrl'].forEach(function(key) {
+            ['imgUrl', 'centerX', 'centerY', 'unCenterX', 'unCenterY', 'rotationRate',
+             'shrinkLeft', 'shrinkRight', 'shrinkTop', 'shrinkBottom'].forEach(function(key) {
                 if (qsArgs[key] !== undefined) {
                     config[key] = qsArgs[key];
                 }
@@ -283,16 +284,20 @@ CanvasFeedback = function() {
         this.img = new Image();
         this.r = 0;
 
-        this.centerX = 200;
-        this.centerY = 200;
-        this.unCenterX = -200;
-        this.unCenterY = -200;
-        this.rotationRate = 200;
+        var def = function(value, default_) {
+            return value !== undefined ? value : default_;
+        };
 
-        this.shrinkLeft = 1;
-        this.shrinkRight = 1;
-        this.shrinkTop = 1;
-        this.shrinkBottom = 1;
+        this.centerX = def(cfg.centerX, 200);
+        this.centerY = def(cfg.centerY, 200);
+        this.unCenterX = def(cfg.unCenterX, -1 * this.centerX);
+        this.unCenterY = def(cfg.unCenterY, -1 * this.centerY);
+        this.rotationRate = def(cfg.rotationRate, 200);
+
+        this.shrinkLeft = def(cfg.shrinkLeft, 1);
+        this.shrinkRight = def(cfg.shrink, 1);
+        this.shrinkTop = def(cfg.shrinkLeft, 1);
+        this.shrinkBottom = def(cfg.shrinkLeft, 1);
 
         var $this = this;
 
