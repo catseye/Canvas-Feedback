@@ -275,33 +275,50 @@ function launch(prefix, containerId, config) {
 
 
 CanvasFeedback = function() {
-    var canvas;
-    var ctx;
 
-    var img = new Image();
-    var r = 0;
+    this.init = function(cfg) {
+        this.canvas = cfg.canvas;
+        this.ctx = this.canvas.getContext("2d");
 
-    this.centerX = 200;
-    this.centerY = 200;
-    this.unCenterX = -200;
-    this.unCenterY = -200;
-    this.rotationRate = 200;
+        this.img = new Image();
+        this.r = 0;
 
-    this.shrinkLeft = 1;
-    this.shrinkRight = 1;
-    this.shrinkTop = 1;
-    this.shrinkBottom = 1;
+        this.centerX = 200;
+        this.centerY = 200;
+        this.unCenterX = -200;
+        this.unCenterY = -200;
+        this.rotationRate = 200;
+
+        this.shrinkLeft = 1;
+        this.shrinkRight = 1;
+        this.shrinkTop = 1;
+        this.shrinkBottom = 1;
+
+        var $this = this;
+
+        this.animation = (new yoob.Animation()).init({
+            'object': $this,
+            'mode': 'quantum'
+        });
+        this.animation.start();
+        
+        this.img.onload = function() {
+            $this.reset();
+        }
+        this.img.src = cfg.imgUrl;
+    };
 
     this.draw = function() {
+        var ctx = this.ctx;
         ctx.save();
         ctx.translate(this.centerX, this.centerY);
-        ctx.rotate(r);
+        ctx.rotate(this.r);
         ctx.translate(this.unCenterX, this.unCenterY);
-        r += this.rotationRate / 1000000;
-        ctx.drawImage(canvas,
+        this.r += this.rotationRate / 1000000;
+        ctx.drawImage(this.canvas,
             this.shrinkLeft, this.shrinkTop,
-            canvas.width - this.shrinkLeft - this.shrinkRight,
-            canvas.height - this.shrinkTop - this.shrinkBottom);
+            this.canvas.width - this.shrinkLeft - this.shrinkRight,
+            this.canvas.height - this.shrinkTop - this.shrinkBottom);
         ctx.restore();
     };
 
@@ -309,22 +326,22 @@ CanvasFeedback = function() {
     };
 
     this.load = function(url) {
-        var self = this;
-        img.onload = function() {
-            self.reset();
+        var $this = this;
+        this.img.onload = function() {
+            $this.reset();
         }
-        img.src = url;
+        this.img.src = url;
     };
 
     this.reset = function() {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        this.centerX = img.width / 2;
-        this.centerY = img.height / 2;
+        this.canvas.width = this.img.width;
+        this.canvas.height = this.img.height;
+        this.centerX = this.img.width / 2;
+        this.centerY = this.img.height / 2;
         this.unCenterX = -1 * this.centerX;
         this.unCenterY = -1 * this.centerY;
-        r = 0;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        this.r = 0;
+        this.ctx.drawImage(this.img, 0, 0, this.canvas.width, this.canvas.height);
         this.resume();
     };
 
@@ -334,22 +351,5 @@ CanvasFeedback = function() {
 
     this.pause = function() {
         this.animation.stop();
-    };
-
-    this.init = function(cfg) {
-        canvas = cfg.canvas;
-        ctx = canvas.getContext("2d");
-        var $this = this;
-
-        this.animation = (new yoob.Animation()).init({
-            'object': this,
-            'mode': 'quantum'
-        });
-        this.animation.start();
-        
-        img.onload = function() {
-            $this.reset();
-        }
-        img.src = cfg.imgUrl;
     };
 };
