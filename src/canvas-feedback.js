@@ -5,6 +5,19 @@
  * https://github.com/catseye/canvas-feedback/blob/master/LICENSE
  */
 
+function parseQuerystring(qs) {
+    qs = qs || window.location.search.substring(1);
+    var object = {};
+    var pairs = qs.split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        var components = pairs[i].split('=');
+        var key = decodeURIComponent(components[0]);
+        var value = decodeURIComponent(components[1]);
+        object[key] = value;
+    }
+    return object;
+}
+
 function launch(prefix, containerId, config) {
     var config = config || {};
     var deps = [
@@ -92,7 +105,7 @@ function launch(prefix, containerId, config) {
             );
             shrinkBottomSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
-            
+
             var p = new yoob.PresetManager();
             p.init({
                 'selectElem': presetSelect
@@ -233,7 +246,7 @@ function launch(prefix, containerId, config) {
                     shrink_bottom: 1
                 }
             };
-            
+
             var setPreset = function(n) {
                 var obj = presets[n];
                 rotateSlider.set(obj.rotate);
@@ -242,11 +255,18 @@ function launch(prefix, containerId, config) {
                 shrinkTopSlider.set(obj.shrink_top);
                 shrinkBottomSlider.set(obj.shrink_bottom);
             };
-            
+
             for (n in presets) {
                 p.add(n, setPreset);
             }
-            
+
+            var qsArgs = parseQuerystring();
+            ['imgUrl'].forEach(function(key) {
+                if (qsArgs[key] !== undefined) {
+                    config[key] = qsArgs[key];
+                }
+            });
+
             t.init(config);
         };
         document.body.appendChild(elem);
