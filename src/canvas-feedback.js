@@ -18,6 +18,12 @@ function parseQuerystring(qs) {
     return object;
 }
 
+
+function def(value, default_) {
+    return value !== undefined ? value : default_;
+}
+
+
 function launch(prefix, containerId, config) {
     var config = config || {};
     var deps = [
@@ -31,6 +37,22 @@ function launch(prefix, containerId, config) {
         elem.src = prefix + deps[i];
         elem.onload = function() {
             if (++loaded < deps.length) return;
+
+            config.centerX = def(config.centerX, 200);
+            config.centerY = def(config.centerY, 200);
+            config.rotationRate = def(config.rotationRate, 200);
+            config.shrinkLeft = def(config.shrinkLeft, 1);
+            config.shrinkRight = def(config.shrinkRight, 1);
+            config.shrinkTop = def(config.shrinkTop, 1);
+            config.shrinkBottom = def(config.shrinkBottom, 1);
+
+            var qsArgs = parseQuerystring();
+            ['imgUrl', 'centerX', 'centerY', 'rotationRate',
+             'shrinkLeft', 'shrinkRight', 'shrinkTop', 'shrinkBottom'].forEach(function(key) {
+                if (qsArgs[key] !== undefined) {
+                    config[key] = qsArgs[key];
+                }
+            });
 
             var container = document.getElementById(containerId);
 
@@ -72,35 +94,40 @@ function launch(prefix, containerId, config) {
             stylePanel(sliderPanel);
 
             var rotateSlider = yoob.makeSliderPlusTextInput(
-                sliderPanel, 'Rotate (microRadians):', -3000, 3000, 5, 200,
+                sliderPanel, 'Rotate (microRadians):', -3000, 3000, 5,
+                config.rotationRate,
                 function(v) { t.rotationRate = v; }
             );
             rotateSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkLeftSlider = yoob.makeSliderPlusTextInput(
-                sliderPanel, 'Shrink Left (pixels):', -200, 200, 5, 1,
+                sliderPanel, 'Shrink Left (pixels):', -200, 200, 5,
+                config.shrinkLeft,
                 function(v) { t.shrinkLeft = v; }
             );
             shrinkLeftSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkRightSlider = yoob.makeSliderPlusTextInput(
-                sliderPanel, 'Shrink Right (pixels):', -200, 200, 5, 1,
+                sliderPanel, 'Shrink Right (pixels):', -200, 200, 5,
+                config.shrinkRight,
                 function(v) { t.shrinkRight = v; }
             );
             shrinkRightSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkTopSlider = yoob.makeSliderPlusTextInput(
-                sliderPanel, 'Shrink Top (pixels):', -200, 200, 5, 1,
+                sliderPanel, 'Shrink Top (pixels):', -200, 200, 5,
+                config.shrinkTop,
                 function(v) { t.shrinkTop = v; }
             );
             shrinkTopSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkBottomSlider = yoob.makeSliderPlusTextInput(
-                sliderPanel, 'Shrink Bottom (pixels):', -200, 200, 5, 1,
+                sliderPanel, 'Shrink Bottom (pixels):', -200, 200, 5,
+                config.shrinkBottom,
                 function(v) { t.shrinkBottom = v; }
             );
             shrinkBottomSlider.textInput.style.width = "auto";
@@ -260,14 +287,6 @@ function launch(prefix, containerId, config) {
                 p.add(n, setPreset);
             }
 
-            var qsArgs = parseQuerystring();
-            ['imgUrl', 'centerX', 'centerY', 'unCenterX', 'unCenterY', 'rotationRate',
-             'shrinkLeft', 'shrinkRight', 'shrinkTop', 'shrinkBottom'].forEach(function(key) {
-                if (qsArgs[key] !== undefined) {
-                    config[key] = qsArgs[key];
-                }
-            });
-
             t.init(config);
         };
         document.body.appendChild(elem);
@@ -284,14 +303,8 @@ CanvasFeedback = function() {
         this.img = new Image();
         this.r = 0;
 
-        var def = function(value, default_) {
-            return value !== undefined ? value : default_;
-        };
-
         this.centerX = def(cfg.centerX, 200);
         this.centerY = def(cfg.centerY, 200);
-        this.unCenterX = def(cfg.unCenterX, -1 * this.centerX);
-        this.unCenterY = def(cfg.unCenterY, -1 * this.centerY);
         this.rotationRate = def(cfg.rotationRate, 200);
 
         this.shrinkLeft = def(cfg.shrinkLeft, 1);
@@ -318,7 +331,7 @@ CanvasFeedback = function() {
         ctx.save();
         ctx.translate(this.centerX, this.centerY);
         ctx.rotate(this.r);
-        ctx.translate(this.unCenterX, this.unCenterY);
+        ctx.translate(-1 * this.centerX, -1 * this.centerY);
         this.r += this.rotationRate / 1000000;
         ctx.drawImage(this.canvas,
             this.shrinkLeft, this.shrinkTop,
@@ -343,8 +356,6 @@ CanvasFeedback = function() {
         this.canvas.height = this.img.height;
         this.centerX = this.img.width / 2;
         this.centerY = this.img.height / 2;
-        this.unCenterX = -1 * this.centerX;
-        this.unCenterY = -1 * this.centerY;
         this.r = 0;
         this.ctx.drawImage(this.img, 0, 0, this.canvas.width, this.canvas.height);
         this.resume();
