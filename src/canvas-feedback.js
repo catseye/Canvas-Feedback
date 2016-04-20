@@ -38,8 +38,6 @@ function launch(prefix, containerId, config) {
         elem.onload = function() {
             if (++loaded < deps.length) return;
 
-            config.centerX = def(config.centerX, 200);
-            config.centerY = def(config.centerY, 200);
             config.rotationRate = def(config.rotationRate, 200);
             config.shrinkLeft = def(config.shrinkLeft, 1);
             config.shrinkRight = def(config.shrinkRight, 1);
@@ -47,10 +45,11 @@ function launch(prefix, containerId, config) {
             config.shrinkBottom = def(config.shrinkBottom, 1);
 
             var qsArgs = parseQuerystring();
-            ['imgUrl', 'centerX', 'centerY', 'rotationRate',
+            if (qsArgs.imgUrl !== undefined) config.imgUrl = qsArgs.imgUrl;
+            ['width', 'height', 'rotationRate',
              'shrinkLeft', 'shrinkRight', 'shrinkTop', 'shrinkBottom'].forEach(function(key) {
                 if (qsArgs[key] !== undefined) {
-                    config[key] = qsArgs[key];
+                    config[key] = parseInt(qsArgs[key], 10);
                 }
             });
 
@@ -303,14 +302,14 @@ CanvasFeedback = function() {
         this.img = new Image();
         this.r = 0;
 
-        this.centerX = def(cfg.centerX, 200);
-        this.centerY = def(cfg.centerY, 200);
+        this.width = cfg.width;
+        this.height = cfg.height;
         this.rotationRate = def(cfg.rotationRate, 200);
 
         this.shrinkLeft = def(cfg.shrinkLeft, 1);
-        this.shrinkRight = def(cfg.shrink, 1);
-        this.shrinkTop = def(cfg.shrinkLeft, 1);
-        this.shrinkBottom = def(cfg.shrinkLeft, 1);
+        this.shrinkRight = def(cfg.shrinkRight, 1);
+        this.shrinkTop = def(cfg.shrinkTop, 1);
+        this.shrinkBottom = def(cfg.shrinkBottom, 1);
 
         var $this = this;
 
@@ -328,10 +327,14 @@ CanvasFeedback = function() {
 
     this.draw = function() {
         var ctx = this.ctx;
+        var width = this.canvas.width;
+        var height = this.canvas.height;
+        var centerX = width / 2;
+        var centerY = height / 2;
         ctx.save();
-        ctx.translate(this.centerX, this.centerY);
+        ctx.translate(centerX, centerY);
         ctx.rotate(this.r);
-        ctx.translate(-1 * this.centerX, -1 * this.centerY);
+        ctx.translate(-1 * centerX, -1 * centerY);
         this.r += this.rotationRate / 1000000;
         ctx.drawImage(this.canvas,
             this.shrinkLeft, this.shrinkTop,
@@ -352,12 +355,12 @@ CanvasFeedback = function() {
     };
 
     this.reset = function() {
-        this.canvas.width = this.img.width;
-        this.canvas.height = this.img.height;
-        this.centerX = this.img.width / 2;
-        this.centerY = this.img.height / 2;
+        var width = this.width !== undefined ? this.width : this.img.width;
+        var height = this.height !== undefined ? this.height : this.img.height;
+        this.canvas.width = width;
+        this.canvas.height = height;
         this.r = 0;
-        this.ctx.drawImage(this.img, 0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.img, 0, 0, width, height);
         this.resume();
     };
 
