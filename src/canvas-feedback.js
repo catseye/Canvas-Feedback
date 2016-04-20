@@ -1,6 +1,6 @@
 /*
  * Canvas Feedback -- "video feedback" in an HTML5 canvas
- * Copyright (c)2015 Chris Pressey, Cat's Eye Technologies.
+ * Copyright (c)2015-2016 Chris Pressey, Cat's Eye Technologies.
  * Distributed under an MIT license -- see this URL for full information:
  * https://github.com/catseye/canvas-feedback/blob/master/LICENSE
  */
