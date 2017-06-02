@@ -74,3 +74,10 @@ License
 -------
 
 Distributed under an MIT license.  See [LICENSE](LICENSE) for full information.
+
+History
+-------
+
+* version 0.1: Initial release.
+* version 0.1-2015.0826: added the JS1K version to this repo.
+* version 0.2: Allowed the parameters to be configured by querystring args.
