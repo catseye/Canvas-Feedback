@@ -3,20 +3,29 @@
   <meta charset="utf-8">
   <title>Canvas Feedback</title>
   <style>
+#installation_container > div {
+  display: inline-block;
+  vertical-align: top;
+}
+#canvas_container {
+  text-align: center;
+}
+#canvas_container canvas {
+  display: block;
+  background: white;
+  border: 1px solid black;
+}
   </style>
 </head>
 <body>
+  <h1>Canvas Feedback</h1>
 
-<h1>Canvas Feedback</h1>
+  <div id="installation_container"></div>
 
-<div id="container" style="display: inline-block;"></div>
-<div id="control_panel" style="display: inline-block; vertical-align: top;"></div>
-
+  <script src="../src/canvas-feedback.js"></script>
+  <script>
+    launch('../src/yoob/', 'installation_container', {
+        'imgUrl': 'http://i.imgur.com/SYFLz1X.jpg'
+    });
+  </script>
 </body>
-<script src="../src/canvas-feedback.js"></script>
-<script>
-  launch('../src/yoob/', 'container', {
-      'controlPanel': document.getElementById('control_panel'),
-      'imgUrl': 'http://i.imgur.com/SYFLz1X.jpg'
-  });
-</script>

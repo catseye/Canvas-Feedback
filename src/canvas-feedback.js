@@ -57,17 +57,19 @@ function launch(prefix, containerId, config) {
 
             var t = new CanvasFeedback();
 
-            var canvas = yoob.makeCanvas(container, 400, 400);
-            canvas.style.background = "white";
-            canvas.style.border = "1px solid black";
+            var canvasContainer = yoob.makeDiv(container);
+            canvasContainer.id = 'canvas_container';
+            var canvas = yoob.makeCanvas(canvasContainer, 400, 400);
             config.canvas = canvas;
 
-            var buttonPanel = yoob.makeDiv(container);
+            var buttonPanel = yoob.makeDiv(canvasContainer);
+            buttonPanel.id = 'button_panel';
             yoob.makeButton(buttonPanel, 'Restart', function() { t.reset(); });
             yoob.makeButton(buttonPanel, 'Pause', function() { t.pause(); });
             yoob.makeButton(buttonPanel, 'Resume', function() { t.resume(); });
 
-            var controlPanel = config.controlPanel || container;
+            var controlPanel = yoob.makeDiv(container);
+            controlPanel.id = 'control_panel';
 
             var stylePanel = function(panel) {
                 panel.style.background = "#e0e0e0";
