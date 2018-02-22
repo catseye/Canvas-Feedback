@@ -71,28 +71,18 @@ function launch(prefix, containerId, config) {
             var controlPanel = yoob.makeDiv(container);
             controlPanel.id = 'control_panel';
 
-            var stylePanel = function(panel) {
-                panel.style.background = "#e0e0e0";
-                panel.style.padding = "3px";
-                panel.parentNode.style.background = "#c0c0c0";
-                panel.parentNode.style.textAlign = "left";
-            };
-
             urlPanel = yoob.makePanel(controlPanel, "Image URL", false);
             var urlElem = yoob.makeTextInput(urlPanel, 64, config.imgUrl);
             urlElem.style.width = "80%";
             yoob.makeButton(urlPanel, 'Load', function() {
                 t.load(urlElem.value);
             });
-            stylePanel(urlPanel);
 
             presetPanel = yoob.makePanel(controlPanel, "Select Preset", true);
             var presetSelect = yoob.makeSelect(presetPanel, "Preset:", []);
-            stylePanel(presetPanel);
 
             var sliderPanel = yoob.makePanel(controlPanel, "Adjust Parameters", false);
             sliderPanel.style.textAlign = "right";
-            stylePanel(sliderPanel);
 
             var rotateSlider = yoob.makeSliderPlusTextInput(
                 sliderPanel, 'Rotate (microRadians):', -3000, 3000, 5,
