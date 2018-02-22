@@ -72,8 +72,7 @@ function launch(prefix, containerId, config) {
             controlPanel.id = 'control_panel';
 
             urlPanel = yoob.makePanel(controlPanel, "Image URL", false);
-            var urlElem = yoob.makeTextInput(urlPanel, 64, config.imgUrl);
-            urlElem.style.width = "80%";
+            var urlElem = yoob.makeTextInput(urlPanel, 32, config.imgUrl);
             yoob.makeButton(urlPanel, 'Load', function() {
                 t.load(urlElem.value);
             });
@@ -82,14 +81,12 @@ function launch(prefix, containerId, config) {
             var presetSelect = yoob.makeSelect(presetPanel, "Preset:", []);
 
             var sliderPanel = yoob.makePanel(controlPanel, "Adjust Parameters", false);
-            sliderPanel.style.textAlign = "right";
 
             var rotateSlider = yoob.makeSliderPlusTextInput(
                 sliderPanel, 'Rotate (microRadians):', -3000, 3000, 5,
                 config.rotationRate,
                 function(v) { t.rotationRate = v; }
             );
-            rotateSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkLeftSlider = yoob.makeSliderPlusTextInput(
@@ -97,7 +94,6 @@ function launch(prefix, containerId, config) {
                 config.shrinkLeft,
                 function(v) { t.shrinkLeft = v; }
             );
-            shrinkLeftSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkRightSlider = yoob.makeSliderPlusTextInput(
@@ -105,7 +101,6 @@ function launch(prefix, containerId, config) {
                 config.shrinkRight,
                 function(v) { t.shrinkRight = v; }
             );
-            shrinkRightSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkTopSlider = yoob.makeSliderPlusTextInput(
@@ -113,7 +108,6 @@ function launch(prefix, containerId, config) {
                 config.shrinkTop,
                 function(v) { t.shrinkTop = v; }
             );
-            shrinkTopSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var shrinkBottomSlider = yoob.makeSliderPlusTextInput(
@@ -121,7 +115,6 @@ function launch(prefix, containerId, config) {
                 config.shrinkBottom,
                 function(v) { t.shrinkBottom = v; }
             );
-            shrinkBottomSlider.textInput.style.width = "auto";
             yoob.makeLineBreak(sliderPanel);
 
             var p = new yoob.PresetManager();
