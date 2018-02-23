@@ -74,7 +74,9 @@ function launch(prefix, containerId, config) {
             urlPanel = yoob.makePanel(controlPanel, "Image URL", false);
             var urlElem = yoob.makeTextInput(urlPanel, 32, config.imgUrl);
             yoob.makeButton(urlPanel, 'Load', function() {
-                t.load(urlElem.value);
+                t.width = undefined;
+                t.height = undefined;
+                t.loadImage(urlElem.value);
             });
 
             presetPanel = yoob.makePanel(controlPanel, "Select Preset", true);
@@ -342,10 +344,8 @@ CanvasFeedback = function() {
     this.update = function() {
     };
 
-    this.load = function(url) {
+    this.loadImage = function(url) {
         var $this = this;
-        this.width = undefined;
-        this.height = undefined;
         this.img.onload = function() {
             $this.reset();
         }
