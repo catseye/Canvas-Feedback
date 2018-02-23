@@ -81,3 +81,4 @@ History
 * version 1.0: Initial release.
 * version 1.0-2015.0826: added the JS1K version to this repo.
 * version 1.1: Allowed the parameters to be configured by querystring args.
+* version 1.1-2018.0223: Added a button giving link to current parameters.
