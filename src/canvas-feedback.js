@@ -117,6 +117,17 @@ function launch(prefix, containerId, config) {
             );
             yoob.makeLineBreak(sliderPanel);
 
+            var linkPanel = yoob.makeDiv(controlPanel);
+            var linkButton = yoob.makeButton(linkPanel, "Link to this Configuration", function(e) {
+                var url = document.location.href;
+                url += '?imgUrl=' + encodeURIComponent(t.img.src);
+                ['width', 'height', 'rotationRate',
+                 'shrinkLeft', 'shrinkRight', 'shrinkTop', 'shrinkBottom'].forEach(function(key) {
+                    url += '&' + key + '=' + encodeURIComponent(t[key]);
+                });
+                alert(url);
+            });
+
             var p = new yoob.PresetManager();
             p.init({
                 'selectElem': presetSelect
@@ -333,6 +344,8 @@ CanvasFeedback = function() {
 
     this.load = function(url) {
         var $this = this;
+        this.width = undefined;
+        this.height = undefined;
         this.img.onload = function() {
             $this.reset();
         }
@@ -340,12 +353,13 @@ CanvasFeedback = function() {
     };
 
     this.reset = function() {
-        var width = this.width !== undefined ? this.width : this.img.width;
-        var height = this.height !== undefined ? this.height : this.img.height;
-        this.canvas.width = width;
-        this.canvas.height = height;
+        // assumed to only be called after a (new) image is loaded.
+        if (this.width === undefined) this.width = this.img.width;
+        if (this.height === undefined) this.height = this.img.height;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
         this.r = 0;
-        this.ctx.drawImage(this.img, 0, 0, width, height);
+        this.ctx.drawImage(this.img, 0, 0, this.width, this.height);
         this.resume();
     };
 
